@@ -1,0 +1,276 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    text-rendering: optimizelegibility;
+    text-rendering: geometricprecision;
+    -moz-osx-font-smoothing: grayscale;
+    -moz-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: rgb(0 0 0 / 0%);
+    -webkit-touch-callout: none;
+}
+
+html, body {
+    font-family: 'Inter', sans-serif;
+    width: 100%;
+    height: 100%;
+    font-size: 100%;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+    scroll-behavior: smooth;
+    margin-top: 0 !important;
+}
+
+a {
+    transition: .2s cubic-bezier(.4,0,.2,1);
+    transition-property: transform, background-color, color;
+}
+
+a:active {
+    transform: scale(.97);
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* ============================================
+   STORIES - motion.dev principles
+
+   Règles appliquées :
+   - Focus sur l'image, texte secondaire
+   - Transitions rapides (150-250ms)
+   - ease-out pour entrées/sorties
+   - Seulement opacity + transform (GPU)
+   - Pas de mouvements qui distraient
+   ============================================ */
+
+:root {
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Barre de progression - linear car c'est une visualisation de temps */
+@keyframes progress {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+.animate-progress {
+    animation: progress 10s linear forwards;
+}
+
+/* === CONTENEUR === */
+/* Ouverture : fade rapide */
+.stories-container {
+    opacity: 0;
+    animation: container-in 250ms var(--ease-out-expo) forwards;
+}
+
+.stories-container.is-closing {
+    animation: container-out 200ms var(--ease-out-expo) forwards;
+}
+
+@keyframes container-in {
+    to { opacity: 1; }
+}
+
+@keyframes container-out {
+    to { opacity: 0; }
+}
+
+/* === IMAGE === */
+/* Crossfade fluide entre images */
+.story-image {
+    transition: opacity 300ms var(--ease-out-expo);
+    will-change: opacity;
+}
+
+/* === HEADER === */
+/* Slide down subtil à l'ouverture uniquement */
+.story-header {
+    opacity: 0;
+    transform: translateY(-8px);
+    animation: header-in 300ms var(--ease-out-expo) 50ms forwards;
+}
+
+@keyframes header-in {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === CONTENU (titre, description, bouton) === */
+/* Pas de transition - changement instantané comme Instagram */
+
+/* === BOUTON === */
+/* Feedback tactile instantané */
+.btn-primary {
+    transition: transform 100ms var(--ease-out-expo);
+    will-change: transform;
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+.btn-ghost {
+    transition: background-color 150ms ease;
+}
+
+.btn-ghost:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* === ACCESSIBILITÉ === */
+@media (prefers-reduced-motion: reduce) {
+    .stories-container,
+    .story-header {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+
+    .story-image,
+    .story-text,
+    .btn-primary,
+    .btn-ghost {
+        transition: none;
+    }
+}
+
+/* ============================================
+   MAIN SCREEN - Emil Kowalski principles
+
+   - ease-out-expo pour entrées
+   - Durées : 150-250ms (UI standard)
+   - will-change pour éviter jitter
+   - Seulement opacity + transform (GPU)
+   ============================================ */
+
+:root {
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* === POSTER === */
+/* Pas d'animation - le contenu principal doit être visible immédiatement */
+.hero-poster {
+    opacity: 1;
+}
+
+/* === TEXTE (animation désactivée par défaut) === */
+.hero-title,
+.hero-meta,
+.hero-description {
+    opacity: 0;
+    transform: translateY(8px);
+    will-change: transform, opacity;
+}
+
+/* === BOUTONS (animation désactivée par défaut) === */
+.action-btn {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+    will-change: transform, opacity;
+}
+
+.cta-primary,
+.cta-secondary {
+    opacity: 0;
+    transform: translateY(4px);
+    will-change: transform, opacity;
+}
+
+/* === ANIMATIONS (déclenchées par .animate-in) === */
+.animate-in .hero-title {
+    animation: slide-up 220ms var(--ease-out-expo) 60ms forwards;
+}
+
+.animate-in .hero-meta {
+    animation: slide-up 200ms var(--ease-out-expo) 80ms forwards;
+}
+
+.animate-in .hero-description {
+    animation: slide-up 200ms var(--ease-out-expo) 100ms forwards;
+}
+
+.animate-in .action-btn {
+    animation: action-in 180ms var(--ease-out-expo) forwards;
+}
+
+.animate-in .action-btn:nth-child(1) { animation-delay: 120ms; }
+.animate-in .action-btn:nth-child(2) { animation-delay: 140ms; }
+.animate-in .action-btn:nth-child(3) { animation-delay: 160ms; }
+.animate-in .action-btn:nth-child(4) { animation-delay: 180ms; }
+
+.animate-in .cta-primary {
+    animation: cta-in 180ms var(--ease-out-expo) 200ms forwards;
+}
+
+.animate-in .cta-secondary:nth-child(1) { animation: cta-in 180ms var(--ease-out-expo) 220ms forwards; }
+.animate-in .cta-secondary:nth-child(2) { animation: cta-in 180ms var(--ease-out-expo) 240ms forwards; }
+
+@keyframes slide-up {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes action-in {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes cta-in {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === FEEDBACK TACTILE (scale 0.97 comme Emil) === */
+.action-btn,
+.cta-primary,
+.cta-secondary {
+    transition: transform 100ms var(--ease-out-expo), background-color 150ms ease;
+}
+
+.action-btn:active { transform: scale(0.97); }
+.cta-primary:active,
+.cta-secondary:active { transform: scale(0.97); }
+
+@media (hover: hover) and (pointer: fine) {
+    .action-btn:hover { background-color: rgba(255, 255, 255, 0.1); }
+    .cta-primary:hover { background-color: #c41414; }
+    .cta-secondary:hover { background-color: #2d2e31; }
+}
+
+/* === ACCESSIBILITÉ === */
+@media (prefers-reduced-motion: reduce) {
+    .hero-title,
+    .hero-meta,
+    .hero-description,
+    .action-btn,
+    .cta-primary,
+    .cta-secondary {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+    .action-btn,
+    .cta-primary,
+    .cta-secondary {
+        transition: none;
+    }
+}
+

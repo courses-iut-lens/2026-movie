@@ -1,0 +1,17 @@
+{
+  "name": "mymovie",
+  "version": "1.0.0",
+  "description": "myMovie WordPress Theme",
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "dev": "concurrently \"tailwindcss -i ./src/css/style.css -o ./dist/style.css --watch\" \"tailwindcss -i ./src/css/404.css -o ./dist/404.css --watch\" \"esbuild src/js/main.js --bundle --outfile=dist/main.js --watch\"",
+    "build": "tailwindcss -i ./src/css/style.css -o ./dist/style.css --minify && tailwindcss -i ./src/css/404.css -o ./dist/404.css --minify && esbuild src/js/main.js --bundle --outfile=dist/main.js --minify"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "concurrently": "^9.2.1",
+    "esbuild": "^0.27.2",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.14"
+  }
+}
